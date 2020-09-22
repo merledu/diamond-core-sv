@@ -4,28 +4,24 @@ JALR_i,JAL_i,LUI_i,
 output logic [2:0] aluop_o);
 always_comb
 begin
-case(aluop_o)
-begin
 if(RTYPE_i == 1)
 	aluop_o=000;
-elseif(LOAD_i == 1)
+else if(LOAD_i == 1)
 	aluop_o=100;
-elseif(STORE_i == 1)
+else if(STORE_i == 1)
 	aluop_o=101;
-elseif(BRANCH_i == 1)
+else if(BRANCH_i == 1)
 	aluop_o=010;
-elseif(ITYPE_i == 1)
+else if(ITYPE_i == 1)
 	aluop_o=001;
-elseif(JALR_i == 1) 
+else if(JALR_i == 1) 
 	aluop_o=011;
-elseif(JAL_i==1)
+else if(JAL_i==1)
 	aluop_o=011;
-elseif(LUI_i == 1)
+else if(LUI_i == 1)
 	aluop_o=110;
 else
-	aluop_o=3'bxxx;
+	aluop_o=3'b0;
 end
-endcase
-end
-endmodule;
+endmodule
 

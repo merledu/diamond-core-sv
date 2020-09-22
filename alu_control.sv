@@ -1,90 +1,87 @@
-`timescale 1ns/1ns
-module alucontrol(input logic [2:0] aluop_i,f3_i, input logic f7_i, output logic [4:0] out_o);
+`timescale 1ns/1ps
+module aluc_ontrol(input logic [2:0] aluop_i,f3_i, input logic f7_i, output logic [4:0] out_o);
 always_comb
 begin
-case(aluop_i,f3_i,f7_i)
-begin
-if (aluop_i == 101 || aluop_i==100 || aluop_i==110)  //load store lui
+if (aluop_i == 101 || aluop_i==100 || aluop_i==110)  
 	begin
-		if(f3==3'bxxx && f7= x)
+		if(f3_i==3'b000 && f7_i== 0)
 		out_o= 5'b00000;
 		else
 		out_o= 5'b00000;
 	end
-elseif (aluop_i==011)  //jal jalr
+else if (aluop_i==011)  
 	begin
-		if(f3==3'bxxx && f7= x)
+		if(f3_i==3'b000 && f7_i== 0)
 		out_o= 5'b11111;
 		else
 		out_o= 5'b11111;
 	end
-elseif (aluop_i==000) //r-type
+else if (aluop_i==000) 
 	begin
-		if(f3==3'b000 && f7= 0)   //add addi
+		if(f3_i==3'b000 && f7_i== 0)   
 		out_o= 5'b00000;
-		elseif(f3==3'b000 && f7= 1)   //sub
+		else if(f3_i==3'b000 && f7_i== 1)   
 		out_o= 5'b01000;
-		elseif(f3==3'b001 && f7= 0	)   //sll slli
+		else if(f3_i==3'b001 && f7_i== 0)   
 		out_o= 5'b00001;
-		elseif(f3==3'b010 && f7= 0)   //slt slti
+		else if(f3_i==3'b010 && f7_i== 0)   
 		out_o= 5'b00010;
-		elseif(f3==3'b011 && f7= 0)  //sltu sltiu
-		out_O= 5'b00011;
-		elseif(f3==3'b100 && f7= 0)  //xor xori
-		out_O= 5'b00100;
-     		elseif(f3==3'b101 && f7= 0)   //srl srli
-		out_O= 5'b00101;
-		elseif(f3==3'b101 && f7= 1)   //sra srai
-		out_O= 5'b01101;
-		elseif(f3==3'b110 && f7= 0)   //or ori
-		out_O= 5'b00110;
-		elseif(f3==3'b111 && f7= 0)   //and andi
-		out_O= 5'b00111;
+		else if(f3_i==3'b011 && f7_i== 0)  
+		out_o = 5'b00011;
+		else if(f3_i==3'b100 && f7_i== 0)  
+		out_o = 5'b00100;
+     		else if(f3_i==3'b101 && f7_i==0)   
+		out_o = 5'b00101;
+		else if(f3_i==3'b101 && f7_i==1)  
+		out_o = 5'b01101;
+		else if(f3_i==3'b110 && f7_i==0)  
+		out_o = 5'b00110;
+		else if(f3_i==3'b111 && f7_i==0)   
+		out_o= 5'b00111;
 		else
-		out_o= 5'bxxxxx;
+		out_o= 5'b1110;
 	end
-elseif (aluop_i== 001)                //i-type
+else if (aluop_i== 001)                
 	begin
-	if(f3==3'b000 && f7= x)       //addi
+	if(f3_i==3'b000 )       
 	out_o= 5'b00000;
-	elseif(f3==3'b001 && f7= 0)   //slli
+	else if(f3_i==3'b001 )   
 	out_o= 5'b00001;
-	elseif(f3==3'b010 && f7= x)   //slti
+	else if(f3_i==3'b010 )  
 	out_o= 5'b00010;
-	elseif(f3==3'b011 && f7= x)  //sltiu
-	out_O= 5'b00011;
-	elseif(f3==3'b100 && f7= x)  //xori
-	out_O= 5'b00100;
-     	elseif(f3==3'b101 && f7= 0)   //srli
-	out_O= 5'b00101;
-	elseif(f3==3'b101 && f7= 1)   //srai
-	out_O= 5'b01101;
-	elseif(f3==3'b110 && f7= x)   //ori
-	out_O= 5'b00110;
-	elseif(f3==3'b111 && f7= x)   //and andi
-	out_O= 5'b00111;
+	else if(f3_i==3'b011 )  
+	out_o= 5'b00011;
+	else if(f3_i==3'b100)  
+	out_o = 5'b00100;
+     	else if(f3_i==3'b101 )   
+	out_o = 5'b00101;
+	else if(f3_i==3'b101 )   
+	out_o = 5'b01101;
+	else if(f3_i==3'b110 )   
+	out_o = 5'b00110;
+	else if(f3_i==3'b111 )  
+	out_o = 5'b00111;
 	else
-	out_o= 5'bxxxxx;
+	out_o = 5'b11110;
 	end
-else if(aluop_i == 010)      // branch 
+else if(aluop_i == 010)      
 	begin
-	if(fucn3_i == 000 && func7_i=x)
-	aluc_o=5b'10000;
-	else if(fucn3_i == 001 && func7_i=x)
-	aluc_o=5b'10001;
-	else if(fucn3_i == 100 && func7_i=x)
-	aluc_o=5b'10100;
-	else if(fucn3_i == 101 && func7_i=x)
-	aluc_o=5b'10101;
-	else if(fucn3_i == 110 && func7_i=x)
-	aluc_o=5b'10110;
-	else if(fucn3_i == 111 && func7_i=x)
-	aluc_o=5b'10111;
+	if(f3_i == 000 )
+	out_o= 5'b10000;
+	else if(f3_i == 001 )
+	out_o=5'b10001;
+	else if(f3_i == 100 )
+	out_o=5'b10100;
+	else if(f3_i == 101)
+	out_o=5'b10101;
+	else if(f3_i == 110)
+	out_o=5'b10110;
+	else if(f3_i == 111 )
+	out_o=5'b10111;
 	else
-	aluc_o=5b'xxxxx;
+	out_o=5'b11110;
 	end
 else 
-	aluc_o=5b'xxxxx;
+	out_o=5'b11110;
 end
 endmodule
-end
